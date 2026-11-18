@@ -4,7 +4,7 @@
 
 ## V2.1 · 2026-11-18 — style validé, déclinaison des pages
 
-**Statut : `Jeu` V2 validée par Gaia. Les 3 autres pages sont en revue.**
+**Statut : les 4 pages sont validées par Gaia (2026-11-18).** Style pas encore verrouillé (`/lock`). Les questions produit ci-dessous restent ouvertes.
 
 ### Livré
 - `STYLE.md` : palette, typo, grille 740 × 560, épaisseurs, composants, mouvement, états, ton. Tiré de la planche `Jeu` V2 validée.
@@ -26,6 +26,7 @@
 
 ### Changelog
 - 2026-11-18 · `STYLE.md` créé ; planches Post, Carte de fin, Séries & classement en V2.
+- 2026-11-18 · Post, Carte de fin, Séries & classement validées par Gaia.
 
 ## V2 · 2026-11-18 — Contour retenu, version gamifiée (page `Jeu`)
 
