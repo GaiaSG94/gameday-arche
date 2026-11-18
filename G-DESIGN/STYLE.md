@@ -1,6 +1,7 @@
 # STYLE — Arche · Contour
 
 > V2 · 2026-11-18 · Claude. Style validé par Gaia sur la page `Jeu` (`planches/v2/02-jeu.html`).
+> **VERROUILLÉ le 2026-11-18 (`/lock`).** Toute modification passe par `/delta` et une nouvelle version datée dans `DESIGN.md`.
 > Référence unique pour toutes les planches suivantes : on ne s'en écarte pas sans nouvelle version.
 > Cadre : post interactif dans le feed desktop, zone de jeu **740 × 560**. Desktop seul (décision de Gaia, V2).
 
