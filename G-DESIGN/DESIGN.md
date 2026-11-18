@@ -2,6 +2,31 @@
 
 > Tenu par Claude. Versions datées, jamais écrasées.
 
+## V2 · 2026-11-18 — Contour retenu, version gamifiée (page `Jeu`)
+
+**Statut : en revue.** Planche : `planches/v2/02-jeu.html`. La V1 reste intacte dans `planches/v1/`.
+
+### Décisions de Gaia
+- **Direction retenue : 03 Contour.** 01 Lueur et 02 Brume sont abandonnées.
+- **Traits blancs à épaissir.**
+- **Rendre le jeu visuellement plus « jeu ».**
+- **Desktop seul, pas de version mobile.** Cela remplace le §6 du brief (qui imposait les deux cadres) pour la suite.
+
+### Ce qui change
+- Épaisseurs : arches 4 px, silhouette, cases et jetons 3 px, contour du grand « 3 » 2,5 px, filet blanc de 3 px au-dessus du HUD (V1 : 1 à 1,5 px).
+- Jetons de coût ronds au-dessus des arches (−1 ; −3 et +5 en blanc plein pour la récompense), avec une petite flamme : l'orange signifie toujours « lumière ».
+- Sélection animée : arche pleine, contour pointillé qui défile, flèche qui rebondit au-dessus.
+- Aperçu de la conséquence : le segment de torche qui va s'éteindre clignote en hachures, compteur « 7 → 6 ».
+- Le rail 01 → 06 devient une carte de six petites arches reliées (passées pleines, actuelle avec la flamme, à venir en gris).
+- Reliques en cases d'inventaire 56 px avec ombre portée dure ; relique utilisée barrée ; effet prêt signalé par une pastille (« +1 next »).
+- Bouton d'action en bloc blanc avec ombre portée dure qui s'enfonce au clic, rappel du choix et du coût dessous.
+- Décor au trait : sol en perspective, marches qui plongent dans l'eau, trois lignes de vagues.
+- Le jeu est montré à 100 % (740 × 560) dans son post ; le feed complet n'apparaît plus qu'en vignette de contexte.
+- Animations coupées si l'utilisateur demande moins de mouvement (`prefers-reduced-motion`).
+
+### Changelog
+- 2026-11-18 · V2 créée (Contour gamifié, desktop seul).
+
 ## V1 · 2026-11-18 — exploration du style (page principale `Jeu`)
 
 **Statut : en attente de validation de Gaia.** Rien n'est verrouillé ; `STYLE.md` sera écrit après le choix.
