@@ -1,6 +1,6 @@
 # PAGES — Arche
 
-> Version V1 · 2026-11-18 · proposé par Claude. **Les 4 pages sont validées par Gaia (2026-11-18).**
+> Version V1 · 2026-11-18 · proposé par Claude. **Les 4 pages sont validées par Gaia (2026-11-18). Style verrouillé le même jour.**
 > Le nombre de pages découle de la boucle décrite dans `IDEE.md` (draft → 6 salles → carte de fin → série/classement) et des 4 critères Stage 2.
 > ~~Chaque planche montre deux cadres : desktop 1440 × 900 et mobile 390 × 844 (§6 du brief).~~
 > **Depuis V2 (2026-11-18, décision de Gaia) : desktop 1440 × 900 seul, pas de version mobile.** Style retenu : Contour.

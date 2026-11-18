@@ -2,9 +2,29 @@
 
 > Tenu par Claude. Versions datées, jamais écrasées.
 
+## LOCK · 2026-11-18 — style verrouillé
+
+**Statut : verrouillé par Gaia (`/lock`, 2026-11-18).** Fin des explorations.
+
+### Ce qui est figé
+- Le style **Contour** tel que décrit dans `STYLE.md` (V2).
+- Les 4 planches de référence : `planches/v2/01-post.html`, `02-jeu.html`, `03-carte-de-fin.html`, `04-series-classement.html`.
+- Le format : desktop seul, zone de jeu 740 × 560 dans le post.
+
+### Règles après le lock
+- Plus de `/planches` ni de `/variantes` sur le style.
+- Toute modification passe par `/delta` et crée une nouvelle version datée ici (V3…) ; les planches v2 ne sont jamais écrasées.
+- Un nouvel écran (par exemple une page `Draft` si le draft a lieu avant la salle 1) se dessine dans ce style, sans en sortir.
+
+### Toujours ouvert (produit, ne bloque pas le lock)
+Les 5 questions listées en V2.1 : moment du draft, score, série après un échec, égalités, heure de la nouvelle seed. Elles peuvent changer le contenu des écrans, pas le style.
+
+### Changelog
+- 2026-11-18 · Style verrouillé.
+
 ## V2.1 · 2026-11-18 — style validé, déclinaison des pages
 
-**Statut : les 4 pages sont validées par Gaia (2026-11-18).** Style pas encore verrouillé (`/lock`). Les questions produit ci-dessous restent ouvertes.
+**Statut : les 4 pages sont validées par Gaia (2026-11-18).** Style verrouillé ensuite (voir LOCK). Les questions produit ci-dessous restent ouvertes.
 
 ### Livré
 - `STYLE.md` : palette, typo, grille 740 × 560, épaisseurs, composants, mouvement, états, ton. Tiré de la planche `Jeu` V2 validée.
