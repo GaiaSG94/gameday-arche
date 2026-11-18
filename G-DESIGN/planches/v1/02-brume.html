@@ -1,0 +1,207 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>Arche · v1 · 02 Brume</title>
+<style>*{box-sizing:border-box;margin:0;padding:0}
+html{background:#0d0d0f}
+body{width:1440px;height:900px;margin:0 auto;overflow:hidden;position:relative;background:#0d0d0f;color:#d9d6d0;font-family:"Ubuntu Sans","Inter","Segoe UI",Roboto,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit;border:0;cursor:pointer}
+.board-top{height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;border-bottom:1px solid #1f1f22}
+.board-top h1{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.board-top em{font-style:normal;color:#55524c;margin:0 6px}
+.board-top .meta{font-size:11px;color:#77736c;letter-spacing:.04em}
+.stage{position:absolute;top:84px;left:40px;right:40px;bottom:18px;display:flex;justify-content:space-between}
+.col-d{width:864px}.col-m{width:352px;margin-right:60px}
+.frame-d{width:864px;height:540px;overflow:hidden;border-radius:10px;position:relative;box-shadow:0 0 0 1px #2a2a2e,0 30px 60px rgba(0,0,0,.55)}
+.frame-d>.vp{width:1440px;height:900px;transform:scale(.6);transform-origin:0 0}
+.frame-m{width:352px;height:762px;border-radius:36px;overflow:hidden;position:relative;box-shadow:0 0 0 7px #1b1b1e,0 0 0 8px #34343a,0 30px 60px rgba(0,0,0,.55)}
+.frame-m>.vp{width:390px;height:844px;transform:scale(.9026);transform-origin:0 0}
+.cap{display:flex;justify-content:space-between;font-size:11px;color:#77736c;letter-spacing:.03em;margin-top:12px}
+.cap.top{margin:0 0 14px}
+.notes{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:32px;margin-top:22px;border-top:1px solid #1f1f22;padding-top:18px}
+.notes h3{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#77736c;font-weight:600;margin-bottom:10px}
+.notes p{font-size:12.5px;line-height:1.55;color:#bdb9b1;margin-bottom:8px}
+.sw{list-style:none;display:grid;gap:7px}
+.sw li{display:grid;grid-template-columns:22px 68px 1fr;align-items:center;font-size:12px;color:#bdb9b1}
+.sw i{width:14px;height:14px;border-radius:3px;box-shadow:0 0 0 1px #34343a}
+.sw b{font-family:"Ubuntu Sans Mono","DejaVu Sans Mono",monospace;font-weight:500;font-size:11.5px}
+/* host feed chrome: neutral, deliberately quiet */
+.rd{height:100%;background:#0b0c0d;color:#d4d7d9;font-family:system-ui,sans-serif}
+.rd-nav{height:56px;border-bottom:1px solid #222426;display:flex;align-items:center;padding:0 20px}
+.ph{width:32px;height:32px;border-radius:50%;background:#26282a}
+.search{width:560px;height:40px;border-radius:20px;background:#1b1d1f;margin:0 auto;color:#6c7175;font-size:14px;display:flex;align-items:center;padding:0 18px}
+.rd-body{display:flex;gap:24px;justify-content:center;padding-top:16px}
+.feed{width:740px}.side{width:316px}
+.post-h{display:flex;align-items:center;gap:8px;font-size:12px;color:#9a9ea1;padding:6px 2px}
+.post-h b{color:#d4d7d9}
+.sub-ic{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#1b1d1f}
+.sub-ic svg{width:14px;height:14px}
+.post-t{font-size:18px;font-weight:600;color:#eceef0;padding:4px 2px 12px}
+.rd .webview{width:740px;height:560px;border-radius:14px;overflow:hidden}
+.acts{display:flex;gap:8px;padding:10px 0}
+.pill{height:32px;border-radius:16px;background:#1b1d1f;padding:0 14px;font-size:12px;color:#c3c7ca;display:flex;align-items:center}
+.side-c{background:#141618;border-radius:14px;padding:16px;font-size:12px;line-height:1.5;color:#9a9ea1}
+.side-c>b{color:#eceef0;font-size:14px}.side-c p{margin:6px 0 12px}
+.st{display:flex;gap:24px}.st b{display:block;color:#eceef0;font-size:14px}
+.rm{height:100%;background:#0b0c0d;color:#d4d7d9;font-family:system-ui,sans-serif;display:flex;flex-direction:column}
+.sbar{height:44px;display:flex;justify-content:space-between;align-items:center;padding:0 28px;font-size:15px}
+.sbar .ic{display:flex;gap:5px}.sbar i{width:16px;height:10px;border-radius:2px;background:#d4d7d9}
+.abar{height:48px;display:flex;align-items:center;gap:10px;padding:0 14px;font-size:14px}
+.back{font-size:28px;line-height:1;color:#9a9ea1;margin-right:4px}
+.m-t{font-size:15px;font-weight:600;padding:2px 16px 12px;color:#eceef0}
+.rm .webview{width:390px;height:612px;flex:none}
+.rm .acts{padding:12px 14px}
+
+.rm .webview{height:auto;flex:1 1 0}
+.webview{container-type:size}
+.game{position:relative;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:var(--f-body);display:grid;grid-template-rows:44px 28px 1fr auto;isolation:isolate}
+.halo{position:absolute;inset:0;z-index:-1;pointer-events:none}
+.bignum{display:none}
+.g-top{display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-family:var(--f-ui);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.wm{font-family:var(--f-title);font-size:17px;letter-spacing:.24em;color:var(--ink);font-weight:var(--w-title);font-stretch:var(--stretch)}
+.prog{padding:0 22px}
+.rooms{list-style:none;display:flex;gap:6px;height:100%;align-items:center}
+.rooms li{flex:1;height:3px;border-radius:2px;background:var(--line)}
+.rooms li span{display:none}
+.rooms li.done{background:var(--ink-2)}
+.rooms li.now{background:var(--accent);box-shadow:0 0 10px var(--accent-glow)}
+.scene{position:relative;min-height:0}
+.room{position:absolute;top:10px;left:22px;z-index:2}
+.rk{font-family:var(--f-ui);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-text)}
+.room h2{font-family:var(--f-title);font-weight:var(--w-title);font-stretch:var(--stretch);font-size:var(--h2);line-height:.95;letter-spacing:var(--h2-ls);text-transform:var(--h2-tt);margin-top:4px;color:var(--ink)}
+.rule{font-size:12.5px;color:var(--dim);margin-top:8px;max-width:270px;line-height:1.4}
+.arches{position:absolute;left:0;right:0;bottom:22px;display:flex;justify-content:center;gap:150px;z-index:1}
+.arch{width:150px;text-align:center}
+.arch-s{width:150px;height:225px;display:block}
+.tag{margin-top:10px;display:flex;flex-direction:column;gap:3px;align-items:center}
+.tag b{font-family:var(--f-title);font-weight:var(--w-title);font-stretch:var(--stretch);font-size:15px;letter-spacing:.06em;text-transform:uppercase}
+.tag span{font-family:var(--f-ui);font-size:11px;color:var(--dim);letter-spacing:.04em}
+.floor{position:absolute;left:0;right:0;bottom:0;height:70px;z-index:0}
+.fig{position:absolute;left:50%;bottom:58px;width:58px;height:115px;transform:translateX(-50%);z-index:2;overflow:visible}
+.g-bot{display:grid;grid-template-columns:1fr 230px;gap:22px;align-items:center;padding:14px 22px 16px;border-top:1px solid var(--line)}
+.lbl{display:block;font-family:var(--f-ui);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:7px}
+.light{position:absolute;top:84px;right:22px;width:200px;z-index:3;display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto;column-gap:10px;align-items:end}
+.light .lbl{grid-column:1/3}
+.pips{display:flex;gap:4px}
+.pips i{flex:1;height:16px;border-radius:2px;background:var(--line)}
+.pips i.on{background:var(--accent)}
+.num{font-family:var(--f-title);font-weight:var(--w-title);font-stretch:var(--stretch);font-size:24px;line-height:16px}
+.num small{font-size:12px;color:var(--dim);margin-left:1px}
+.relics{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.relics li{min-width:0;display:flex;gap:9px;align-items:center;padding:8px 10px;border-radius:var(--r);background:var(--panel);box-shadow:inset 0 0 0 1px var(--line)}
+.relics svg{width:18px;height:18px;flex:none;fill:none;stroke:var(--accent-text);stroke-width:1.6}
+.relics b{display:block;font-size:12px;font-weight:600}
+.relics span{display:block;font-size:10.5px;color:var(--dim);line-height:1.3}
+.relics li.used{opacity:.45}
+.relics li.used b{text-decoration:line-through;text-decoration-thickness:1px}
+.cta{height:48px;border-radius:var(--r);background:var(--accent);color:var(--on-accent);font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 0 24px var(--accent-glow)}
+.cta.off{background:transparent;color:var(--dim);box-shadow:inset 0 0 0 1px var(--line);cursor:default}
+@container (max-width:480px){
+ .game{grid-template-rows:44px 24px 1fr auto}
+ .g-top .walk{display:none}
+ .room{left:18px;right:18px;top:8px}
+ .rule{max-width:none}
+ .arches{gap:34px;bottom:14px}
+ .arch,.arch-s{width:120px}.arch-s{height:180px}
+ .tag b{font-size:13px}.tag span{font-size:10px}
+ .fig{width:40px;height:80px;bottom:48px}
+ .g-bot{grid-template-columns:1fr;gap:12px;padding:12px 16px 16px}
+ .relics{gap:6px}.relics li{padding:7px 8px;gap:6px}.relics svg{width:14px;height:14px}
+ .relics b{font-size:11px}.relics span{display:none}
+ .cta{width:100%}
+ .light{position:static;width:auto}
+}
+
+
+.game{--bg:#a9adb5;--panel:rgba(255,255,255,.2);--ink:#141519;--ink-2:#3b3e45;--dim:#4a4e56;--line:rgba(20,21,25,.2);--accent:#d97a26;--accent-glow:rgba(217,122,38,.3);--accent-text:#141519;--on-accent:#141519;
+--f-title:"Ubuntu Sans",system-ui,sans-serif;--stretch:100%;--w-title:300;--f-body:"Ubuntu Sans",system-ui,sans-serif;--f-ui:"Ubuntu Sans Mono","DejaVu Sans Mono",monospace;--h2:42px;--h2-ls:-.03em;--h2-tt:none;--r:2px}
+.halo{background:radial-gradient(circle at 50% 67%,rgba(217,122,38,.28),rgba(217,122,38,.06) 14%,transparent 24%),linear-gradient(transparent 55%,rgba(255,255,255,.22) 63%,transparent 72%),linear-gradient(#c6c9cf 0%,#a9adb5 50%,#8b8f98 100%)}
+.wm{font-weight:500;letter-spacing:.4em}
+.arch-wall{fill:#1b1c21}
+.arch-void{fill:#bfc2c8}
+.arch.sel .arch-void{fill:#dfe1e4;stroke:#d97a26;stroke-width:2.5;vector-effect:non-scaling-stroke}
+.game[data-state=select] .arch:not(.sel){opacity:.55}
+.tag b{font-family:var(--f-ui);font-weight:500;font-size:12px;letter-spacing:.14em}
+.arch.sel .tag b{box-shadow:inset 0 -2px #d97a26;padding-bottom:2px}
+.floor{background:linear-gradient(transparent,rgba(20,21,25,.14))}
+.fig-b,.fig-t{fill:#141519}
+.flame{fill:#d97a26;filter:drop-shadow(0 0 6px rgba(217,122,38,.8))}
+.pips i{height:12px}.pips i.on{background:#141519}
+.num{font-weight:300;font-size:28px}
+.relics b{font-weight:500}
+.cta{font-family:var(--f-ui);font-weight:600;letter-spacing:.16em}
+.cta.off{color:#3b3e45}
+.rooms li.now{box-shadow:none}
+</style></head><body>
+<div class="board-top"><h1>Arche <em>/</em> Jeu <em>/</em> v1 · 02 — Brume</h1><span class="meta">Planche 1440 × 900 · Claude · 2026-11-18 · données de démo</span></div>
+<div class="stage"><div class="col-d"><div class="frame-d"><div class="vp"><div class="rd"><div class="rd-nav"><span class="ph"></span><span class="search">Search</span><span class="ph"></span></div>
+<div class="rd-body"><div class="feed"><div class="post">
+<div class="post-h"><span class="sub-ic"><svg viewBox="0 0 24 24"><path d="M5 21V11a7 7 0 0 1 14 0v10h-4v-9a3 3 0 0 0-6 0v9z"/></svg></span><b>r/ArcheDaily</b> · 2 h · <span>u/arche-keeper</span></div>
+<div class="post-t">Arche · Day 12 — The Drowned Stair</div>
+<div class="webview"><div class="game" data-state="select">
+<div class="halo"></div><div class="bignum" aria-hidden="true">3</div>
+<header class="g-top"><span class="wm">Arche</span><span class="day">Day 12 · Nov 18</span><span class="walk">4,812 walked today</span></header>
+<div class="prog"><ol class="rooms"><li class="done"><span>01</span></li><li class="done"><span>02</span></li><li class="now"><span>03</span></li><li class=""><span>04</span></li><li class=""><span>05</span></li><li class=""><span>06</span></li></ol></div>
+<section class="scene">
+ <div class="room"><span class="rk">Room 3 of 6</span><h2>The Drowned Stair</h2><p class="rule">Choose an arch. Reach room six with your torch still lit.</p></div>
+ <div class="arches">
+  <div class="arch sel"><svg class="arch-s" viewBox="0 0 160 240" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+<path class="arch-wall" d="M0 240V0h160v240z"/>
+<path class="arch-void" d="M46 240V96a34 34 0 0 1 68 0V240z"/></svg><div class="tag"><b>Narrow arch</b><span>&minus;1 light</span></div></div>
+  <div class="arch"><svg class="arch-s" viewBox="0 0 160 240" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+<path class="arch-wall" d="M0 240V0h160v240z"/>
+<path class="arch-void" d="M22 240V104a58 58 0 0 1 116 0V240z"/></svg><div class="tag"><b>Wide arch</b><span>&minus;3 light · +5 next room</span></div></div>
+ </div>
+ <div class="floor"></div><svg class="fig" viewBox="-14 -16 80 158" aria-hidden="true">
+<path class="fig-b" d="M28 9a9 9 0 1 1 0 18a9 9 0 1 1 0-18zM17 33q11-7 22 0l3 8l11-25l4 2l-11 30l3 32l-5 2l-2 56h-8l-2-46l-2 46h-8l-1-56l-6-2z"/>
+<path class="fig-t" d="M52 18l4-14l3 1l-4 14z"/>
+<path class="flame" d="M58 4c-6-5-1-11-1-17c4 4 9 9 6 15c-1 2-3 3-5 2z"/></svg>
+</section>
+<footer class="g-bot">
+ <div class="light"><span class="lbl">Torch</span><div class="pips"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div><span class="num">7<small>/10</small></span></div>
+ <ul class="relics">
+  <li><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="6"/></svg><div><b>Ember Ring</b><span>+1 light on even rooms</span></div></li>
+  <li><svg viewBox="0 0 20 20"><path d="M10 3l6 7l-6 7l-6-7z"/></svg><div><b>Salt Compass</b><span>See room six early</span></div></li>
+  <li class="used"><svg viewBox="0 0 20 20"><path d="M10 4l7 12H3z"/></svg><div><b>Ash Veil</b><span>Once: an arch costs 0</span></div></li>
+ </ul>
+ <button class="cta">Walk the narrow arch</button>
+</footer></div></div>
+<div class="acts"><span class="pill">&#9650; 1.2k &#9660;</span><span class="pill">348 comments</span><span class="pill">Share</span></div>
+</div></div>
+<aside class="side"><div class="side-c"><b>r/ArcheDaily</b><p>One arch-run a day. Same seed for everyone.</p><div class="st"><span><b>12.4k</b> members</span><span><b>213</b> online</span></div></div></aside></div></div></div></div>
+<div class="cap"><span>Desktop · 1440 × 900 (affiché à 60 %)</span><span>État : arche sélectionnée, prêt à valider</span></div>
+<div class="notes"><div><h3>Direction</h3><p>Je m'écarte du noir : la réf Igloo est en fait un brouillard froid et clair, et un post gris pâle tranche davantage qu'un énième post sombre dans un feed en mode nuit. La flamme devient la seule chose chaude de l'écran, donc encore plus lisible. Le ton reste calme et un peu inquiétant : une ruine dans la brume plutôt qu'un donjon.</p></div>
+<div><h3>Palette</h3><ul class="sw"><li><i style="background:#a9adb5"></i><b>#a9adb5</b><span>Brouillard</span></li><li><i style="background:#141519"></i><b>#141519</b><span>Encre (pierre, texte)</span></li><li><i style="background:#d97a26"></i><b>#d97a26</b><span>Braise (seul accent)</span></li><li><i style="background:#4a4e56"></i><b>#4a4e56</b><span>Ardoise (secondaire)</span></li><li><i style="background:#dfe1e4"></i><b>#dfe1e4</b><span>Clairière (arche choisie)</span></li></ul></div>
+<div><h3>Typo · motif</h3><p>Titres : sans fine (300), casse normale, serrée. Interface : mono minuscule en capitales, comme un relevé.</p><p>Portes monolithes sombres, on voit le brouillard au travers. Seule la flamme est chaude.</p></div></div></div>
+<div class="col-m"><div class="cap top"><span>Mobile · 390 × 844 (90 %)</span><span>État : aucune arche choisie</span></div>
+<div class="frame-m"><div class="vp"><div class="rm"><div class="sbar"><b>9:41</b><span class="ic"><i></i><i></i><i></i></span></div>
+<div class="abar"><span class="back">&#8249;</span><span class="sub-ic"><svg viewBox="0 0 24 24"><path d="M5 21V11a7 7 0 0 1 14 0v10h-4v-9a3 3 0 0 0-6 0v9z"/></svg></span><b>r/ArcheDaily</b></div>
+<div class="m-t">Arche · Day 12 — The Drowned Stair</div>
+<div class="webview"><div class="game" data-state="idle">
+<div class="halo"></div><div class="bignum" aria-hidden="true">3</div>
+<header class="g-top"><span class="wm">Arche</span><span class="day">Day 12 · Nov 18</span><span class="walk">4,812 walked today</span></header>
+<div class="prog"><ol class="rooms"><li class="done"><span>01</span></li><li class="done"><span>02</span></li><li class="now"><span>03</span></li><li class=""><span>04</span></li><li class=""><span>05</span></li><li class=""><span>06</span></li></ol></div>
+<section class="scene">
+ <div class="room"><span class="rk">Room 3 of 6</span><h2>The Drowned Stair</h2><p class="rule">Choose an arch. Reach room six with your torch still lit.</p></div>
+ <div class="arches">
+  <div class="arch "><svg class="arch-s" viewBox="0 0 160 240" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+<path class="arch-wall" d="M0 240V0h160v240z"/>
+<path class="arch-void" d="M46 240V96a34 34 0 0 1 68 0V240z"/></svg><div class="tag"><b>Narrow arch</b><span>&minus;1 light</span></div></div>
+  <div class="arch"><svg class="arch-s" viewBox="0 0 160 240" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+<path class="arch-wall" d="M0 240V0h160v240z"/>
+<path class="arch-void" d="M22 240V104a58 58 0 0 1 116 0V240z"/></svg><div class="tag"><b>Wide arch</b><span>&minus;3 light · +5 next room</span></div></div>
+ </div>
+ <div class="floor"></div><svg class="fig" viewBox="-14 -16 80 158" aria-hidden="true">
+<path class="fig-b" d="M28 9a9 9 0 1 1 0 18a9 9 0 1 1 0-18zM17 33q11-7 22 0l3 8l11-25l4 2l-11 30l3 32l-5 2l-2 56h-8l-2-46l-2 46h-8l-1-56l-6-2z"/>
+<path class="fig-t" d="M52 18l4-14l3 1l-4 14z"/>
+<path class="flame" d="M58 4c-6-5-1-11-1-17c4 4 9 9 6 15c-1 2-3 3-5 2z"/></svg>
+</section>
+<footer class="g-bot">
+ <div class="light"><span class="lbl">Torch</span><div class="pips"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div><span class="num">7<small>/10</small></span></div>
+ <ul class="relics">
+  <li><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="6"/></svg><div><b>Ember Ring</b><span>+1 light on even rooms</span></div></li>
+  <li><svg viewBox="0 0 20 20"><path d="M10 3l6 7l-6 7l-6-7z"/></svg><div><b>Salt Compass</b><span>See room six early</span></div></li>
+  <li class="used"><svg viewBox="0 0 20 20"><path d="M10 4l7 12H3z"/></svg><div><b>Ash Veil</b><span>Once: an arch costs 0</span></div></li>
+ </ul>
+ <button class="cta off" disabled>Choose an arch</button>
+</footer></div></div>
+<div class="acts"><span class="pill">&#9650; 1.2k &#9660;</span><span class="pill">348</span><span class="pill">Share</span></div></div></div></div></div></div>
+</body></html>

@@ -1,3 +1,3 @@
-# DESIGN - gameday-p21
+# DESIGN - gameday-arche
 
-> A completer (Claude, prompt 07-design).
+Journal de design : voir [`G-DESIGN/DESIGN.md`](G-DESIGN/DESIGN.md).
