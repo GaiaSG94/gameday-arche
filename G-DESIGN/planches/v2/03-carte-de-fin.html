@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Arche · v2 · Carte de fin — Contour</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:#0d0d0f}
+body{width:1440px;height:900px;margin:0 auto;overflow:hidden;position:relative;background:#0d0d0f;color:#d9d6d0;font-family:"Ubuntu Sans","Inter","Segoe UI",Roboto,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit;border:0;cursor:pointer}
+/* ---------- board ---------- */
+.board-top{height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;border-bottom:1px solid #1f1f22}
+.board-top h1{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.board-top em{font-style:normal;color:#55524c;margin:0 6px}
+.board-top .meta{font-size:11px;color:#77736c;letter-spacing:.04em}
+.left{position:absolute;left:40px;top:84px;width:772px}
+.right{position:absolute;left:852px;top:84px;width:548px}
+.cap{display:flex;justify-content:space-between;font-size:11px;color:#77736c;letter-spacing:.03em;margin-top:10px}
+.post-card{background:#0b0c0d;border-radius:18px;padding:14px 16px 8px;box-shadow:0 0 0 1px #222426,0 30px 60px rgba(0,0,0,.5);font-family:system-ui,sans-serif;color:#d4d7d9}
+.post-h{display:flex;align-items:center;gap:8px;font-size:12px;color:#9a9ea1}
+.post-h b{color:#d4d7d9}
+.sub-ic{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#1b1d1f}
+.sub-ic svg{width:14px;height:14px;fill:#fff}
+.post-t{font-size:18px;font-weight:600;color:#eceef0;padding:6px 0 12px}
+.webview{width:740px;height:560px;border-radius:14px;overflow:hidden}
+.acts{display:flex;gap:8px;padding:10px 0 6px}
+.pill{height:32px;border-radius:16px;background:#1b1d1f;padding:0 14px;font-size:12px;color:#c3c7ca;display:flex;align-items:center}
+.thumb{width:548px;height:342px;border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px #2a2a2e}
+.thumb .vp{width:1440px;height:900px;transform:scale(.38056);transform-origin:0 0}
+.rd{height:100%;background:#0b0c0d;font-family:system-ui,sans-serif;color:#d4d7d9}
+.rd-nav{height:56px;border-bottom:1px solid #222426;display:flex;align-items:center;padding:0 20px}
+.ph{width:32px;height:32px;border-radius:50%;background:#26282a}
+.search{width:560px;height:40px;border-radius:20px;background:#1b1d1f;margin:0 auto}
+.rd-body{display:flex;gap:24px;justify-content:center;padding-top:16px}
+.feed{width:740px}
+.side{width:316px;height:150px;border-radius:14px;background:#141618}
+.rd .post-h{padding:6px 2px}.rd .post-t{padding:4px 2px 12px}
+.notes{margin-top:22px;border-top:1px solid #1f1f22;padding-top:16px}
+.notes h3{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#77736c;font-weight:600;margin:0 0 10px}
+.notes ol{list-style:none;counter-reset:n;display:grid;gap:7px;margin-bottom:18px}
+.notes li{counter-increment:n;display:grid;grid-template-columns:26px 1fr;font-size:12.5px;line-height:1.45;color:#bdb9b1}
+.notes li::before{content:counter(n,decimal-leading-zero);font-family:"Ubuntu Sans Mono","DejaVu Sans Mono",monospace;font-size:11px;color:#77736c;padding-top:1px}
+.notes li b{color:#eceae6;font-weight:600}
+.sw{display:flex;gap:18px;font-size:11.5px;color:#bdb9b1}
+.sw span{display:flex;align-items:center;gap:7px;font-family:"Ubuntu Sans Mono","DejaVu Sans Mono",monospace}
+.sw i{width:14px;height:14px;border-radius:3px;box-shadow:0 0 0 1px #3a3a3e}
+/* ---------- game (Contour v2) ---------- */
+.game{--w:#fff;--g:#9c9c9c;--d:#3d3d3d;--l:#2b2b2b;--flame:#e8a33d;position:relative;width:100%;height:100%;background:#000;color:#fff;font-family:"Ubuntu Sans",system-ui,sans-serif;display:grid;grid-template-rows:48px 1fr 128px;overflow:hidden}
+.g-top{display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:2px solid var(--l)}
+.wm{font-weight:800;font-size:18px;letter-spacing:.32em}
+.chip{height:26px;padding:0 11px;display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:2px solid var(--w)}
+.chip.dim{border-color:var(--d);color:var(--g);letter-spacing:.06em;text-transform:none;font-weight:600}
+.chip.dim i{width:7px;height:7px;border-radius:50%;background:var(--w)}
+.scene{position:relative}
+.scene svg.art{position:absolute;inset:0;width:100%;height:100%}
+.bignum{position:absolute;left:14px;top:-34px;font-weight:800;font-size:330px;line-height:1;color:transparent;-webkit-text-stroke:2.5px rgba(255,255,255,.2);pointer-events:none}
+.bignum small{font-size:54px;-webkit-text-stroke:0;color:var(--d);margin-left:4px}
+.room{position:absolute;left:24px;top:16px;width:270px}
+.rk{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--g)}
+.room h2{font-size:34px;font-weight:800;letter-spacing:-.03em;line-height:1;margin-top:6px}
+.rule{font-size:12.5px;color:var(--g);line-height:1.4;margin-top:9px;padding-left:10px;border-left:3px solid var(--w)}
+.stroke{fill:none;stroke:var(--w);stroke-width:4;stroke-linejoin:round;stroke-linecap:round}
+.faint{fill:none;stroke:var(--w);stroke-linecap:round}
+.arch-sel{fill:var(--w);stroke:var(--w);stroke-width:4}
+.ring{fill:none;stroke:var(--w);stroke-width:2.5;stroke-dasharray:7 7;animation:march 1.2s linear infinite}
+@keyframes march{to{stroke-dashoffset:-28}}
+.tok{fill:#000;stroke:var(--w);stroke-width:3}
+.tok-txt{fill:var(--w);font-weight:800;font-size:15px;text-anchor:middle}
+.tok.rew{fill:var(--w)}.tok-txt.rew{fill:#000}
+.tok-fl{fill:var(--flame)}
+.ptr{fill:var(--w);animation:bob .9s ease-in-out infinite alternate}
+@keyframes bob{to{transform:translateY(7px)}}
+.sign{fill:#000;stroke:var(--w);stroke-width:2.5}
+.sign.on{fill:var(--w)}
+.sign-txt{fill:var(--w);font-weight:700;font-size:13px;text-anchor:middle}
+.sign-txt.on{fill:#000}
+.sign-sub{fill:var(--g);font-size:10.5px;font-weight:600;text-anchor:middle}
+.fig{fill:#000;stroke:var(--w);stroke-width:3;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.flame{fill:var(--flame);transform-box:fill-box;transform-origin:50% 100%;animation:flick .35s ease-in-out infinite alternate}
+@keyframes flick{to{transform:scale(.88,1.08) skewX(-4deg)}}
+.map-l{stroke-width:3;fill:none}
+.node{stroke-width:3;stroke-linejoin:round}
+.node.done{fill:var(--w);stroke:var(--w)}
+.node.now{fill:#000;stroke:var(--w)}
+.node.next{fill:#000;stroke:var(--d)}
+.map-n{font-size:11px;font-weight:700;letter-spacing:.08em;text-anchor:end;fill:var(--d)}
+.map-n.done{fill:var(--g);text-decoration:line-through}.map-n.now{fill:var(--w);font-size:13px}
+/* HUD */
+.hud{border-top:3px solid var(--w);display:grid;grid-template-columns:232px 1fr 196px;gap:22px;padding:14px 24px 16px;align-items:start}
+.lbl{display:flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--g);height:14px;margin-bottom:8px}
+.lbl svg{width:9px;height:12px;fill:var(--flame)}
+.torch-row{display:flex;align-items:flex-end;justify-content:space-between}
+.segs{display:flex;gap:4px}
+.segs i{width:17px;height:30px;border:2.5px solid var(--d)}
+.segs i.on{background:var(--w);border-color:var(--w)}
+.segs i.lose{border-color:var(--w);background:repeating-linear-gradient(-45deg,#fff 0 3px,#000 3px 6px);animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:.35}}
+.cnt{display:flex;align-items:baseline;gap:6px;font-weight:800;margin-top:10px}
+.cnt b{font-size:30px;line-height:1}.cnt span{color:var(--g);font-size:16px}.cnt em{font-style:normal;font-size:22px}
+.cnt small{font-size:11px;color:var(--g);font-weight:600;margin-left:4px}
+.slots{display:flex;gap:16px}
+.slot{width:70px;text-align:center;position:relative}
+.box{width:56px;height:56px;margin:0 auto;border:3px solid var(--w);display:grid;place-items:center;box-shadow:4px 4px 0 var(--d)}
+.box svg{width:26px;height:26px;fill:none;stroke:var(--w);stroke-width:3;stroke-linejoin:round}
+.slot b{display:block;font-size:10.5px;font-weight:700;margin-top:6px;white-space:nowrap}
+.badge{position:absolute;top:-8px;right:-2px;background:var(--w);color:#000;font-size:10px;font-weight:800;padding:2px 5px}
+.slot.used .box{border-color:var(--d);box-shadow:none;background:linear-gradient(to top right,transparent calc(50% - 1.5px),var(--d) calc(50% - 1.5px) calc(50% + 1.5px),transparent calc(50% + 1.5px))}
+.slot.used svg{stroke:var(--d)}.slot.used b{color:var(--d);text-decoration:line-through}
+.cta{width:190px;height:72px;margin-top:6px;background:var(--w);color:#000;text-align:left;padding:0 16px;display:flex;flex-direction:column;justify-content:center;box-shadow:6px 6px 0 var(--g);transition:transform .1s,box-shadow .1s}
+.cta:active{transform:translate(6px,6px);box-shadow:0 0 0 var(--g)}
+.cta b{font-size:15px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;display:flex;justify-content:space-between}
+.cta span{font-size:11px;font-weight:600;color:#3d3d3d;margin-top:3px}
+@media (prefers-reduced-motion:reduce){.ring,.ptr,.flame,.segs i.lose{animation:none}}
+
+.alt{width:548px;height:415px;overflow:hidden;border-radius:10px;box-shadow:0 0 0 1px #2a2a2e}
+.alt .vp{width:740px;height:560px;transform:scale(.74054);transform-origin:0 0}
+.notes p{font-size:12.5px;line-height:1.5;color:#bdb9b1;margin-bottom:14px}
+.notes p b{color:#eceae6}
+.pg{width:12px;height:15px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linejoin:round}
+.btn2{height:44px;border:3px solid #fff;background:#000;color:#fff;font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:0 16px;display:inline-flex;align-items:center;gap:10px}
+.col-r{position:absolute;top:16px;right:24px}
+.stat b{display:block;font-size:30px;font-weight:800;line-height:1}
+.stat span{display:block;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--g);margin-top:5px}
+.hud.two{grid-template-columns:1fr 196px}
+.bignum.dim{-webkit-text-stroke-color:rgba(255,255,255,.1)}
+/* post */
+.stats{display:grid;gap:22px;width:150px}
+.wk{display:flex;gap:5px;margin-top:9px}
+.wk i{width:15px;height:15px;border:2.5px solid var(--w)}
+.wk i.on{background:var(--w)}
+.wk i.today{border-style:dashed}
+.st-row{display:flex;align-items:baseline;gap:8px;font-weight:800}
+.st-row b{font-size:30px;line-height:1}.st-row span{font-size:11px;color:var(--g);font-weight:600}
+/* end card */
+.res{position:absolute;left:24px;top:16px;width:330px}
+.res h2{font-size:34px;font-weight:800;letter-spacing:-.03em;line-height:1;margin-top:6px}
+.res .segs{margin-top:16px}
+.path{display:flex;gap:8px;margin-top:8px}
+.path div{width:44px;height:52px;border:3px solid var(--w);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10.5px;font-weight:800}
+.path div.off{border-color:var(--d);color:var(--d)}
+.path div.off .pg{stroke:var(--d)}
+.com{width:332px}
+.hist{display:block;margin-top:6px}
+.bar{fill:#000;stroke:var(--d);stroke-width:2.5}.bar.you{fill:var(--w);stroke:var(--w)}
+.hx{fill:var(--g);font-size:10px;font-weight:700;text-anchor:middle}
+.you-t{fill:var(--w);font-size:10px;font-weight:800;text-anchor:middle;letter-spacing:.1em}
+.duo{display:flex;gap:28px;margin:14px 0 16px}
+.preview{border:2.5px solid var(--d);padding:9px 12px;font-size:12px;line-height:1.6;color:var(--w)}
+.preview .sp{display:inline-block;vertical-align:middle;width:120px;height:13px;background:var(--d);margin-left:6px}
+.preview small{color:var(--g);font-size:10.5px;margin-left:6px}
+/* series */
+.cal{margin-top:16px;display:grid;grid-template-columns:repeat(7,24px);gap:6px}
+.cal span{font-size:10px;font-weight:700;color:var(--g);text-align:center}
+.cal i{width:24px;height:24px;border:2.5px solid var(--d);position:relative}
+.cal i.on{background:var(--w);border-color:var(--w)}
+.cal i.today{border-color:var(--w)}
+.cal i.today::after{content:"";position:absolute;left:6px;top:3px;width:8px;height:13px;background:var(--flame);border-radius:50% 50% 45% 45%/60% 60% 40% 40%}
+.cal i.today.on::after{left:6px}
+.rank{width:386px}
+.rk-t{width:100%;border-collapse:collapse;font-size:12px}
+.rk-t td{height:30px;border-bottom:2px solid var(--l);padding:0 6px}
+.rk-t td:first-child{width:46px;font-weight:800;color:var(--g)}
+.rk-t td.l{text-align:right;font-weight:800;width:60px}
+.rk-t td.p{width:96px}
+.rk-t .pgs{display:flex;gap:3px}
+.rk-t tr.me td{background:var(--w);color:#000;border-bottom-color:var(--w)}
+.rk-t tr.me .pg{stroke:#000}
+.rk-t tr.gap td{height:22px;color:var(--d);font-weight:800;letter-spacing:.3em;border:0}
+.rk-t tr.ghost td{border:2.5px dashed var(--d);color:var(--g);font-weight:600}
+.sp-bar{display:block;width:84px;height:12px;background:var(--d)}
+.hud .stats3{display:flex;gap:34px;padding-top:2px}
+</style></head><body><svg width="0" height="0" style="position:absolute"><symbol id="an" viewBox="0 0 12 15"><path d="M3 14V7a3 3 0 0 1 6 0v7"/></symbol>
+<symbol id="aw" viewBox="0 0 12 15"><path d="M1 14V8a5 5 0 0 1 10 0v6"/></symbol></svg>
+<div class="board-top"><h1>Arche <em>/</em> Carte de fin <em>/</em> v2 — Contour</h1><span class="meta">Planche 1440 × 900 · Claude · 2026-11-18 · desktop seul · données de démo</span></div>
+<div class="left"><div class="post-card"><div class="post-h"><span class="sub-ic"><svg viewBox="0 0 24 24"><path d="M5 21V11a7 7 0 0 1 14 0v10h-4v-9a3 3 0 0 0-6 0v9z"/></svg></span><b>r/ArcheDaily</b> · 2 h · u/arche-keeper</div>
+<div class="post-t">Arche · Day 12</div><div class="webview"><div class="game"><header class="g-top"><span class="wm">ARCHE</span><span class="chip">Day 12 · Nov 18</span><span class="chip dim"><i></i>Next run in 07:42:10</span></header>
+<section class="scene"><div class="bignum" aria-hidden="true">4</div>
+<div class="res"><span class="rk">Day 12 · Run complete</span><h2>Room six<br>reached.</h2><div class="segs"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="cnt"><b>4</b><small>light left · your score</small></div><span class="lbl" style="margin-top:16px">Your path</span><div class="path"><div class=""><svg class="pg"><use href="#an"/></svg>−1</div><div class=""><svg class="pg"><use href="#aw"/></svg>−3</div><div class=""><svg class="pg"><use href="#an"/></svg>−1</div><div class=""><svg class="pg"><use href="#an"/></svg>−1</div><div class=""><svg class="pg"><use href="#aw"/></svg>−3</div><div class=""><svg class="pg"><use href="#an"/></svg>−1</div></div></div>
+<div class="col-r com"><span class="lbl">Light left at room six · 1,829 walkers</span><svg class="hist" width="332" height="140" viewBox="0 0 332 140" aria-hidden="true"><rect class="bar" x="4" y="68" width="25" height="52"/><text class="hx" x="16.5" y="136">1</text><rect class="bar" x="37" y="49" width="25" height="71"/><text class="hx" x="49.5" y="136">2</text><rect class="bar" x="70" y="30" width="25" height="90"/><text class="hx" x="82.5" y="136">3</text><rect class="bar you" x="103" y="16" width="25" height="104"/><text class="hx" x="115.5" y="136">4</text><text class="you-t" x="115.5" y="8">YOU</text><rect class="bar" x="136" y="43" width="25" height="77"/><text class="hx" x="148.5" y="136">5</text><rect class="bar" x="169" y="68" width="25" height="52"/><text class="hx" x="181.5" y="136">6</text><rect class="bar" x="202" y="90" width="25" height="30"/><text class="hx" x="214.5" y="136">7</text><rect class="bar" x="235" y="106" width="25" height="14"/><text class="hx" x="247.5" y="136">8</text><rect class="bar" x="268" y="113" width="25" height="7"/><text class="hx" x="280.5" y="136">9</text><rect class="bar" x="301" y="117" width="25" height="3"/><text class="hx" x="313.5" y="136">10</text></svg>
+<div class="duo"><div class="stat"><b>#670</b><span>of 4,812 today</span></div><div class="stat"><b>10</b><span>day streak · +1</span></div></div><button class="btn2">See today's ranking <span>→</span></button></div>
+</section>
+<footer class="hud two"><div><span class="lbl">Share in the comments</span><div class="preview">Arche · Day 12 · Room 6 · 4/10 light · 10-day streak<br>Path<span class="sp"></span><small>hidden as a spoiler</small></div></div>
+<button class="cta"><b>Post my result <span>→</span></b><span>One tap · adds a comment</span></button></footer></div></div>
+<div class="acts"><span class="pill">&#9650; 1.2k &#9660;</span><span class="pill">348 comments</span><span class="pill">Share</span></div></div>
+<div class="cap"><span>Post dans le feed · zone de jeu 740 × 560 à 100 %</span><span>État : salle six atteinte, 4 de lumière</span></div></div>
+<div class="right"><div class="alt"><div class="vp"><div class="game"><header class="g-top"><span class="wm">ARCHE</span><span class="chip">Day 12 · Nov 18</span><span class="chip dim"><i></i>Next run in 07:42:10</span></header>
+<section class="scene"><div class="bignum dim" aria-hidden="true">0</div>
+<div class="res"><span class="rk">Day 12 · Run over</span><h2>Torch out in<br>room four.</h2><div class="segs"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="cnt"><b>0</b><small>light left · reached room 4</small></div><span class="lbl" style="margin-top:16px">Your path</span><div class="path"><div class=""><svg class="pg"><use href="#an"/></svg>−1</div><div class=""><svg class="pg"><use href="#aw"/></svg>−3</div><div class=""><svg class="pg"><use href="#an"/></svg>−1</div><div class=""><svg class="pg"><use href="#an"/></svg>−1</div><div class="off"><svg class="pg"><use href="#aw"/></svg>—</div><div class="off"><svg class="pg"><use href="#an"/></svg>—</div></div></div>
+<div class="col-r com"><span class="lbl">Light left at room six · 1,829 walkers</span><svg class="hist" width="332" height="140" viewBox="0 0 332 140" aria-hidden="true"><rect class="bar" x="4" y="68" width="25" height="52"/><text class="hx" x="16.5" y="136">1</text><rect class="bar" x="37" y="49" width="25" height="71"/><text class="hx" x="49.5" y="136">2</text><rect class="bar" x="70" y="30" width="25" height="90"/><text class="hx" x="82.5" y="136">3</text><rect class="bar" x="103" y="16" width="25" height="104"/><text class="hx" x="115.5" y="136">4</text><rect class="bar" x="136" y="43" width="25" height="77"/><text class="hx" x="148.5" y="136">5</text><rect class="bar" x="169" y="68" width="25" height="52"/><text class="hx" x="181.5" y="136">6</text><rect class="bar" x="202" y="90" width="25" height="30"/><text class="hx" x="214.5" y="136">7</text><rect class="bar" x="235" y="106" width="25" height="14"/><text class="hx" x="247.5" y="136">8</text><rect class="bar" x="268" y="113" width="25" height="7"/><text class="hx" x="280.5" y="136">9</text><rect class="bar" x="301" y="117" width="25" height="3"/><text class="hx" x="313.5" y="136">10</text></svg>
+<div class="duo"><div class="stat"><b>62%</b><span>lost their torch too</span></div><div class="stat"><b>2,983</b><span>in the dark with you</span></div></div><button class="btn2">See today's ranking <span>→</span></button></div>
+</section>
+<footer class="hud two"><div><span class="lbl">Share in the comments</span><div class="preview">Arche · Day 12 · Torch out in room 4<br>Path<span class="sp"></span><small>hidden as a spoiler</small></div></div>
+<button class="cta"><b>Post my result <span>→</span></b><span>One tap · adds a comment</span></button></footer></div></div></div><div class="cap"><span>Variante · torche éteinte en salle 4 (74 %)</span><span>Même gabarit, l'échec ne change que le contenu</span></div>
+<div class="notes"><h3>Rôle</h3><p>Le résultat, la place dans la communauté et <b>un seul tap pour commenter</b>. Le chemin est caché en spoiler dans le commentaire pour ne pas gâcher la seed des autres.</p>
+<h3>Choix</h3><ol><li><span><b>Score = lumière restante</b> en salle six, en grand chiffre au trait comme le « 3 » du jeu.</span></li><li><span><b>Histogramme</b> de tous ceux qui ont atteint la salle six, ta barre pleine.</span></li><li><span><b>Ton chemin</b> en six cases : arche étroite ou large et son coût.</span></li><li><span><b>Aperçu du commentaire</b> exactement tel qu'il sera posté.</span></li></ol>
+<h3>À décider (produit)</h3><p>La série continue-t-elle si la torche s'éteint ? La variante d'échec n'affiche donc pas de série. Et le score : seulement la lumière restante, ou autre chose ?</p></div></div>
+</body></html>

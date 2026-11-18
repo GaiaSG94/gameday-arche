@@ -2,9 +2,34 @@
 
 > Tenu par Claude. Versions datées, jamais écrasées.
 
+## V2.1 · 2026-11-18 — style validé, déclinaison des pages
+
+**Statut : `Jeu` V2 validée par Gaia. Les 3 autres pages sont en revue.**
+
+### Livré
+- `STYLE.md` : palette, typo, grille 740 × 560, épaisseurs, composants, mouvement, états, ton. Tiré de la planche `Jeu` V2 validée.
+- `planches/v2/01-post.html` : le post avant de jouer. Couloir de six arches en perspective, grand « 12 » du jour, trois compteurs communautaires (joueurs, % arrivés en salle six, compte à rebours), série, bouton « Light the torch ». Vignette de contexte dans le feed.
+- `planches/v2/03-carte-de-fin.html` : salle six atteinte. Score = lumière restante (grand « 4 »), chemin en six cases, histogramme de la communauté avec ta barre pleine, rang, série +1, aperçu du commentaire en un tap (chemin en spoiler). Variante : torche éteinte en salle 4.
+- `planches/v2/04-series-classement.html` : série (calendrier de quatre semaines, aujourd'hui avec la flamme) et classement du jour (chemin de chacun en petites arches, ta ligne en blanc plein). Variante : premier jour, pas encore joué, chemins masqués.
+
+### Décisions
+- Chaque planche montre un état principal à 100 % et un deuxième état (ou le contexte du feed) en vignette.
+- Le chemin d'un joueur est un spoiler : masqué dans le commentaire partagé et dans le classement tant qu'on n'a pas joué.
+- Le chiffre de fond au trait change de sens selon la page : salle (Jeu), jour (Post), score (Carte de fin), série (Séries).
+
+### Questions produit ouvertes
+1. Le draft des reliques : avant la salle 1 (page `Draft` en plus) ou pendant les salles ?
+2. Le score = la lumière restante en salle six, seulement ?
+3. La série continue-t-elle si la torche s'éteint ?
+4. Départage des égalités au classement.
+5. Nouvelle seed à heure fixe pour tout le monde (compte à rebours) ?
+
+### Changelog
+- 2026-11-18 · `STYLE.md` créé ; planches Post, Carte de fin, Séries & classement en V2.
+
 ## V2 · 2026-11-18 — Contour retenu, version gamifiée (page `Jeu`)
 
-**Statut : en revue.** Planche : `planches/v2/02-jeu.html`. La V1 reste intacte dans `planches/v1/`.
+**Statut : validée par Gaia (2026-11-18).** Planche : `planches/v2/02-jeu.html`. La V1 reste intacte dans `planches/v1/`.
 
 ### Décisions de Gaia
 - **Direction retenue : 03 Contour.** 01 Lueur et 02 Brume sont abandonnées.
