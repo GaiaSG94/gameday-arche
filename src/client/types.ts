@@ -1,10 +1,20 @@
 import type { RelicId, Run, RunResult } from '../shared/game';
 
-export type BoardEntry = { user: string; light: number };
+export type BoardEntry = { user: string; light: number; path: number[]; rank: number };
 
-export type Stats = { walkers: number; finished: number; lightsum: number };
+export type Stats = {
+  walkers: number;
+  finished: number;
+  lightsum: number;
+  hist: Record<string, number>;
+};
 
-export type Board = { top: BoardEntry[]; rank: number; total: number };
+export type Board = {
+  top: BoardEntry[];
+  rank: number;
+  total: number;
+  me: { light: number; path: number[] } | null;
+};
 
 export type Init = {
   type: 'init';
@@ -14,6 +24,7 @@ export type Init = {
   streak: number;
   best: number;
   solvedToday: boolean;
+  days: string[];
   nextRun: string;
   run: Run;
   stats: Stats;

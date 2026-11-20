@@ -44,6 +44,7 @@ const handleInit = async (c: Context): Promise<Response> => {
       streak: streak.streak,
       best: streak.best,
       solvedToday: streak.solvedToday,
+      days: streak.days,
       nextRun: nextRunIn(),
       run,
       stats,
@@ -69,7 +70,7 @@ const handleFinish = async (c: Context): Promise<Response> => {
     let streak = previous.streak;
     if (result.won && !previous.solvedToday) {
       streak += 1;
-      await recordWin(day, user, result.light, streak);
+      await recordWin(day, user, result.light, streak, result.path);
     } else if (!result.won && !previous.solvedToday) {
       await recordLoss(day, user);
       streak = 0;

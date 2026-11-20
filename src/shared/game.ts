@@ -1,4 +1,4 @@
-export type RelicId = 'ember' | 'compass' | 'veil';
+﻿export type RelicId = 'ember' | 'compass' | 'veil';
 
 export type Relic = {
   id: RelicId;
@@ -35,6 +35,7 @@ export type RunResult = {
   reachedRoom: number;
   light: number;
   path: number[];
+  costs: number[];
   usedRelics: RelicId[];
   comment: string;
 };
@@ -58,7 +59,23 @@ export const START_LIGHT = 8;
 export const MAX_LIGHT = 10;
 export const EPOCH = Date.UTC(2026, 10, 16);
 
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
 export const dayKeyUTC = (now: Date = new Date()): string => now.toISOString().slice(0, 10);
+
+export const DAY_MS = 86400000;
+
+export const lastDays = (day: string, count = 28): string[] => {
+  const end = Date.parse(`${day}T00:00:00Z`);
+  return Array.from({ length: count }, (_, i) =>
+    dayKeyUTC(new Date(end - (count - 1 - i) * DAY_MS)),
+  );
+};
+
+export const dayLabel = (day: string): string => {
+  const date = new Date(`${day}T00:00:00Z`);
+  return `${MONTHS[date.getUTCMonth()]} ${date.getUTCDate()}`;
+};
 
 export const dayNumber = (day: string): number =>
   Math.floor((Date.parse(`${day}T00:00:00Z`) - EPOCH) / 86400000) + 1;
@@ -118,25 +135,25 @@ export const isValidChoices = (run: Run, choices: RunChoices): boolean => {
 const credit = (light: number, amount: number): number => Math.min(MAX_LIGHT, light + amount);
 
 export const commentFor = (result: RunResult, run: Run, streak: number): string => {
-  const room = result.reachedRoom;
-  const head = `Arche · Day ${run.dayNumber}`;
-  const outcome = result.won
-    ? `Room 6 · ${result.light} light left`
-    : `Torch out in room ${room}`;
-  return `${head} · ${outcome} · ${streak}-day streak. Same seed for everyone — beat my run.`;
+  const head = `Arche Â· Day ${run.dayNumber}`;
+  if (!result.won) return `${head} Â· Torch out in room ${result.reachedRoom}`;
+  const summary = `${head} Â· Room 6 Â· ${result.light}/${MAX_LIGHT} light Â· ${streak}-day streak`;
+  return `${summary}\nPath hidden as a spoiler.`;
 };
 
 const finish = (
-  run: Run,
   reachedRoom: number,
   light: number,
   path: number[],
+  costs: number[],
   usedRelics: RelicId[],
+  won: boolean,
 ): RunResult => ({
-  won: reachedRoom === run.rooms.length,
+  won,
   reachedRoom,
   light: Math.max(0, light),
   path,
+  costs,
   usedRelics,
   comment: '',
 });
@@ -148,9 +165,17 @@ export const replay = (run: Run, choices: RunChoices): RunResult => {
   let veil = false;
   let reachedRoom = 0;
   const path: number[] = [];
+  const costs: number[] = [];
   const usedRelics: RelicId[] = [];
 
   for (const room of run.rooms) {
+    light = credit(light, pending);
+    if (veil) {
+      light = credit(light, 1);
+      usedRelics.push('veil');
+      veil = false;
+    }
+
     const draftStep = reachedRoom === 0 ? 0 : reachedRoom === 2 ? 1 : reachedRoom === 4 ? 2 : -1;
     const draft = draftStep < 0 ? undefined : choices.drafts[draftStep];
     if (draft === 'ember') {
@@ -160,13 +185,6 @@ export const replay = (run: Run, choices: RunChoices): RunResult => {
     if (draft === 'compass') compass = true;
     if (draft === 'veil') veil = true;
 
-    light = credit(light, pending);
-    if (veil) {
-      light = credit(light, 1);
-      usedRelics.push('veil');
-      veil = false;
-    }
-
     const arch = room.arches[choices.arches[reachedRoom] ?? 0] ?? room.arches[0]!;
     const cost = Math.max(0, arch.cost - (compass ? 1 : 0));
     if (compass) {
@@ -175,14 +193,15 @@ export const replay = (run: Run, choices: RunChoices): RunResult => {
     }
     light -= cost;
     path.push(arch.kind === 'narrow' ? 0 : 1);
+    costs.push(arch.cost);
     if (light <= 0) {
       reachedRoom += 1;
-      return finish(run, reachedRoom, 0, path, usedRelics);
+      return finish(reachedRoom, 0, path, costs, usedRelics, false);
     }
     pending = arch.reward;
     reachedRoom += 1;
   }
-  return finish(run, reachedRoom, light, path, usedRelics);
+  return finish(reachedRoom, light, path, costs, usedRelics, true);
 };
 
 export const playRun = (run: Run, choices: RunChoices): RunResult => {
