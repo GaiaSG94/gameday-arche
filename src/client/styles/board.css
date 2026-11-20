@@ -1,0 +1,44 @@
+/* Arche · écran Séries & classement (planche v2/04-series-classement.html) */
+
+.cal { margin-top: 16px; display: grid; grid-template-columns: repeat(7, 24px); gap: 6px; }
+.cal span { font-size: 10px; font-weight: 700; color: var(--g); text-align: center; }
+.cal i { width: 24px; height: 24px; border: 2.5px solid var(--d); position: relative; }
+.cal i.on { background: var(--w); border-color: var(--w); }
+.cal i.today { border-color: var(--w); }
+.cal i.today::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 3px;
+  width: 8px;
+  height: 13px;
+  background: var(--flame);
+  border-radius: 50% 50% 45% 45%/60% 60% 40% 40%;
+}
+
+.rank { width: 386px; }
+
+.rk-t { width: 100%; border-collapse: collapse; font-size: 12px; }
+.rk-t td { height: 30px; border-bottom: 2px solid var(--l); padding: 0 6px; }
+.rk-t td:first-child { width: 46px; font-weight: 800; color: var(--g); }
+.rk-t td.l { text-align: right; font-weight: 800; width: 60px; }
+.rk-t td.p { width: 96px; }
+.rk-t .pgs { display: flex; gap: 3px; }
+.rk-t tr.me td { background: var(--w); color: var(--bg); border-bottom-color: var(--w); }
+.rk-t tr.me .pg { stroke: var(--bg); }
+.rk-t tr.gap td { height: 22px; color: var(--d); font-weight: 800; letter-spacing: 0.3em; border: 0; }
+.rk-t tr.ghost td { border: 2.5px dashed var(--d); color: var(--g); font-weight: 600; }
+
+.sp-bar { display: block; width: 84px; height: 12px; background: var(--d); }
+
+.hud .stats3 { display: flex; gap: 34px; padding-top: 2px; }
+.hud .stats3 .stat b { display: block; font-weight: 800; font-size: 30px; line-height: 1; }
+.hud .stats3 .stat span {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--g);
+  margin-top: 5px;
+}

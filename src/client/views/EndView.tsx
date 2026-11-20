@@ -1,5 +1,7 @@
+import { Histogram } from '../components/Histogram';
+import { PathBoxes } from '../components/PathBoxes';
+import { Torch } from '../components/Torch';
 import type { Finish, Init } from '../types';
-import { Hud } from '../Hud';
 
 type EndProps = {
   init: Init;
@@ -9,61 +11,89 @@ type EndProps = {
   commentDone: boolean;
 };
 
-const Histogram = ({ finished }: { finished: number }) => (
-  <div className="hist" aria-hidden="true">
-    {[3, 5, 8, 12, 16, 14, 10, 7, 4, 2].map((h, i) => (
-      <i key={i} style={{ height: `${Math.max(8, h * (finished > 0 ? 1 : 0.2))}%` }} />
-    ))}
-  </div>
-);
-
 export const EndView = ({ init, finish, onBoard, onComment, commentDone }: EndProps) => {
-  const headline = finish.won ? 'Room six reached.' : `Torch out in room ${finish.reachedRoom}.`;
-  const scoreLabel = finish.won ? 'light left · your score' : `light left · reached room ${finish.reachedRoom}`;
+  const won = finish.won;
+  const score = won ? finish.light : 0;
+  const walkers = finish.stats.walkers;
+  const lines = finish.comment.split('\n');
+  const summary = lines[0] ?? '';
+  const masked = lines.length > 1;
   return (
     <>
       <section className="scene">
-        <div className="bignum" aria-hidden="true">{finish.won ? finish.light : finish.reachedRoom}<small>/6</small></div>
-        <div className="panel">
-          <span className="rk">Day {init.dayNumber} · Run complete</span>
-          <h3>{headline}</h3>
-          <p>{scoreLabel}</p>
-          <span className="rk" style={{ marginTop: 4 }}>Your path</span>
-          <div className="path">
-            {finish.path.map((kind, i) => (
-              <div key={i} className={kind === 1 ? 'wide' : ''}>
-                {kind === 0 ? 'N' : 'W'}
-                <small>{kind === 0 ? '-1/2' : '-3/4'}</small>
-              </div>
-            ))}
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 160px', gap: 14 }}>
-            <div>
-              <span className="rk">Light left at room six</span>
-              <Histogram finished={finish.stats.finished} />
-              <span className="rk">YOU · #{finish.board.rank} of {finish.board.total || finish.stats.walkers} today</span>
+        <div className={`bignum ${won ? '' : 'dim'}`} aria-hidden="true">
+          {score}
+        </div>
+        <div className="res">
+          <span className="rk">
+            Day {init.dayNumber} · Run complete
+          </span>
+          <h2>
+            {won ? (
+              <>
+                Room six
+                <br />
+                reached.
+              </>
+            ) : (
+              <>
+                Torch out in
+                <br />
+                room {finish.reachedRoom}.
+              </>
+            )}
+          </h2>
+          <Torch
+            light={score}
+            cost={0}
+            label={null}
+            plain
+            note={won ? 'light left · your score' : `light left · reached room ${finish.reachedRoom}`}
+          />
+          <span className="lbl" style={{ marginTop: 16 }}>
+            Your path
+          </span>
+          <PathBoxes path={finish.path} costs={finish.costs} />
+        </div>
+        <div className="col-r com">
+          <span className="lbl">Light left at room six · {finish.stats.finished.toLocaleString('en-US')} walkers</span>
+          <Histogram hist={finish.stats.hist} you={won ? finish.light : 0} />
+          <div className="duo">
+            <div className="stat">
+              <b>#{finish.board.rank || '—'}</b>
+              <span>of {walkers.toLocaleString('en-US')} today</span>
             </div>
-            <div>
-              <div className="kv hi"><span>Day streak</span><b>{finish.streak}</b></div>
-              <div className="kv"><span>Best</span><b>{finish.best}</b></div>
-              <div className="kv"><span>Walkers</span><b>{finish.stats.walkers}</b></div>
-              <div className="comment-preview">{finish.comment}</div>
+            <div className="stat">
+              <b>{finish.streak}</b>
+              <span>day streak · {won ? '+1' : 'reset'}</span>
             </div>
           </div>
+          <button className="btn2" onClick={onBoard}>
+            See today’s ranking <span>→</span>
+          </button>
         </div>
       </section>
-      <Hud
-        light={finish.light}
-        reward={0}
-        nextCost={0}
-        relics={[]}
-        used={finish.usedRelics}
-        action={commentDone ? 'Result posted' : 'Post my result'}
-        sub={commentDone ? 'Your comment is live' : 'One tap · adds a comment'}
-        disabled={commentDone}
-        onAction={onComment}
-        onStats={onBoard}
-      />
+      <footer className="hud two">
+        <div>
+          <span className="lbl">Share in the comments</span>
+          <div className="preview">
+            <div>{summary}</div>
+            {masked && (
+              <div className="line2">
+                Path <span className="sp" /> <small>hidden as a spoiler</small>
+              </div>
+            )}
+          </div>
+        </div>
+        <div>
+          <button className="cta" disabled={commentDone} onClick={onComment}>
+            <b>
+              {commentDone ? 'Result posted' : 'Post my result'} <span>→</span>
+            </b>
+            <span>{commentDone ? 'Your comment is live' : 'One tap · adds a comment'}</span>
+          </button>
+        </div>
+      </footer>
     </>
   );
 };

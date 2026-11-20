@@ -1,0 +1,33 @@
+/* Arche · écran Post (planche v2/01-post.html) */
+
+.post-scene { position: relative; overflow: hidden; }
+
+.post-scene .room { width: 236px; }
+
+.post-scene .stats {
+  display: grid;
+  gap: 22px;
+  width: 150px;
+}
+
+.post-scene .stat b { display: block; font-weight: 800; font-size: 30px; line-height: 1; }
+.post-scene .stat span {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--g);
+  margin-top: 5px;
+}
+
+.six-rooms { display: block; width: 232px; height: 56px; }
+
+.st-row { display: flex; align-items: baseline; gap: 8px; font-weight: 800; }
+.st-row b { font-weight: 800; font-size: 30px; line-height: 1; }
+.st-row span { font-size: 11px; color: var(--g); font-weight: 600; }
+
+.wk { display: flex; gap: 5px; margin-top: 9px; }
+.wk i { width: 15px; height: 15px; border: 2.5px solid var(--w); }
+.wk i.on { background: var(--w); }
+.wk i.today { border-style: dashed; }

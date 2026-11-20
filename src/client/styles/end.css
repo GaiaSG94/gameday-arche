@@ -1,0 +1,57 @@
+/* Arche · écran Carte de fin (planche v2/03-carte-de-fin.html) */
+
+.res { position: absolute; left: 24px; top: 16px; width: 330px; }
+.res h2 { font-weight: 800; font-size: 34px; letter-spacing: -0.03em; line-height: 1; margin-top: 6px; }
+.res .segs { margin-top: 16px; }
+
+.path { display: flex; gap: 8px; margin-top: 8px; }
+
+.path div {
+  width: 44px;
+  height: 52px;
+  border: 3px solid var(--w);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 10.5px;
+  font-weight: 800;
+}
+
+.path div.off { border-color: var(--d); color: var(--d); }
+.path div.off .pg { stroke: var(--d); }
+
+.pg { width: 12px; height: 15px; fill: none; stroke: var(--w); stroke-width: 2.2; stroke-linejoin: round; }
+
+.com { width: 332px; }
+
+.hist { display: block; margin-top: 6px; }
+.bar { fill: var(--bg); stroke: var(--d); stroke-width: 2.5; }
+.bar.you { fill: var(--w); stroke: var(--w); }
+.hx { fill: var(--g); font-size: 10px; font-weight: 700; text-anchor: middle; }
+.you-t { fill: var(--w); font-size: 10px; font-weight: 800; text-anchor: middle; letter-spacing: 0.1em; }
+
+.duo { display: flex; gap: 28px; margin: 14px 0 16px; }
+.duo .stat b { display: block; font-weight: 800; font-size: 30px; line-height: 1; }
+.duo .stat span {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--g);
+  margin-top: 5px;
+}
+
+.preview {
+  border: 2.5px solid var(--d);
+  padding: 9px 12px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--w);
+}
+
+.preview .sp { display: inline-block; vertical-align: middle; width: 120px; height: 13px; background: var(--d); margin-left: 6px; }
+.preview small { color: var(--g); font-size: 10.5px; margin-left: 6px; }
+.preview .line2 { white-space: nowrap; }

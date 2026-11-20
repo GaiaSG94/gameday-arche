@@ -1,18 +1,18 @@
 import type { RelicId, Run } from '../../shared/game';
-import { Hud } from '../Hud';
-import { Scene } from '../Scene';
+import { Relics } from '../components/Relics';
+import { Scene } from '../components/Scene';
+import { Torch } from '../components/Torch';
 
 type RunProps = {
   run: Run;
   roomIndex: number;
   selected: number;
   light: number;
-  reward: number;
   relics: RelicId[];
   used: RelicId[];
+  ready: RelicId[];
   onSelect: (index: number) => void;
   onWalk: () => void;
-  onStats: () => void;
 };
 
 export const RunView = ({
@@ -20,36 +20,31 @@ export const RunView = ({
   roomIndex,
   selected,
   light,
-  reward,
   relics,
   used,
+  ready,
   onSelect,
   onWalk,
-  onStats,
 }: RunProps) => {
   const room = run.rooms[roomIndex]!;
   const arch = room.arches[selected] ?? room.arches[0]!;
   return (
     <>
-      <Scene
-        room={room}
-        roomIndex={roomIndex}
-        selected={selected}
-        onSelect={onSelect}
-        light={light}
-        reward={reward}
-      />
-      <Hud
-        light={light}
-        reward={reward}
-        nextCost={arch.cost}
-        relics={relics}
-        used={used}
-        action="Walk through"
-        sub={`${arch.kind === 'narrow' ? 'Narrow' : 'Wide'} arch · -${arch.cost} light`}
-        onAction={onWalk}
-        onStats={onStats}
-      />
+      <Scene room={room} roomIndex={roomIndex} selected={selected} onSelect={onSelect} />
+      <footer className="hud">
+        <Torch light={light} cost={arch.cost} />
+        <Relics relics={relics} used={used} ready={ready} />
+        <div>
+          <button className="cta" onClick={onWalk}>
+            <b>
+              Walk through <span>→</span>
+            </b>
+            <span>
+              {arch.kind === 'narrow' ? 'Narrow' : 'Wide'} arch · −{arch.cost} light
+            </span>
+          </button>
+        </div>
+      </footer>
     </>
   );
 };
