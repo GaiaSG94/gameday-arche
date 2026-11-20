@@ -27,7 +27,8 @@ score, so the board reflects the real generated run.
   Redis persistence
 - Shared deterministic generator (`src/shared/game.ts`), tested over a full year
 - Locked visual system "Contour": black, white, one flame accent, thick strokes,
-  locally hosted open fonts (no external request)
+  Ubuntu embedded locally (Ubuntu Font Licence, `public/fonts/UFL.txt`), no
+  external request
 
 ## Development
 
@@ -43,6 +44,19 @@ npm run build
 `npm test` runs the node:test suite; `npm run test:types` is the TypeScript
 check (there is no `type-check` script). `npm run build` produces the client
 and server bundles consumed by `devvit.json`.
+
+### Design captures
+
+`capture/` renders the four screens of the locked design with fixture data and
+screenshots them next to the design boards (used by the implementation review
+and by the demo video):
+
+```bash
+npx vite build --config vite.capture.config.ts   # build the capture page
+python -m http.server 8765 --bind 127.0.0.1 --directory capture/dist
+node capture/compare.mjs <output-folder>         # planche vs product, side by side
+node capture/inspect.mjs                         # layout geometry dump
+```
 
 ## Submission
 
