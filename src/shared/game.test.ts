@@ -15,6 +15,7 @@ import {
   START_LIGHT,
   type Run,
   type RunChoices,
+  type RunResult,
 } from './game.ts';
 
 const choices = (arches: number[], drafts: RunChoices['drafts'] = ['ember', 'compass', 'veil']): RunChoices => ({
@@ -119,8 +120,33 @@ test('le commentaire ne divulgue pas le chemin', () => {
   const result = playRun(run, choices([0, 1, 0, 1, 0, 1]));
   const text = commentFor(result, run, 3);
   assert.match(text, /Day 24/);
-  assert.doesNotMatch(text.toLowerCase(), /narrow|wide|arch 1|path/);
   assert.match(text, /3-day streak/);
+  assert.doesNotMatch(text.toLowerCase(), /narrow|wide|\barch\b/);
+  assert.doesNotMatch(text, /[−-]\s?\d/);
+  assert.match(text, /hidden as a spoiler/);
+});
+
+const twoRooms = (first: number, second: number): Run => ({
+  day: 'test',
+  dayNumber: 1,
+  rooms: [
+    { index: 0, name: 'A', arches: [{ kind: 'narrow', cost: first, reward: 0 }, { kind: 'wide', cost: first, reward: 0 }] },
+    { index: 1, name: 'B', arches: [{ kind: 'narrow', cost: second, reward: 0 }, { kind: 'wide', cost: second, reward: 0 }] },
+  ],
+  relicOffers: [['veil', 'compass', 'ember'], ['compass'], ['compass']],
+});
+
+test('Ash Veil ajoute de la lumiere a la salle suivante, jamais la salle du draft', () => {
+  const picks = (run: Run, drafts: RunChoices['drafts']): RunResult =>
+    replay(run, { drafts, arches: [0, 0] });
+  const tight = twoRooms(8, 1);
+  const veiled = picks(tight, ['veil', 'compass', 'compass']);
+  assert.equal(veiled.reachedRoom, 1);
+  assert.ok(!veiled.won);
+  const fair = twoRooms(5, 3);
+  const withVeil = picks(fair, ['veil', 'compass', 'compass']);
+  assert.ok(withVeil.won);
+  assert.equal(withVeil.light, 1);
 });
 
 test('le depart est toujours le meme', () => {
