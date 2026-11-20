@@ -1,0 +1,61 @@
+/* Arche · écran Jeu (planche v2/02-jeu.html) */
+
+.slots { display: flex; gap: 16px; }
+
+.slot { width: 70px; text-align: center; position: relative; }
+
+.box {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto;
+  border: 3px solid var(--w);
+  display: grid;
+  place-items: center;
+  box-shadow: 4px 4px 0 var(--d);
+  background: var(--bg);
+}
+
+.box svg { width: 26px; height: 26px; fill: none; stroke: var(--w); stroke-width: 3; stroke-linejoin: round; }
+.slot b { display: block; font-size: 10.5px; font-weight: 700; margin-top: 6px; white-space: nowrap; }
+
+.badge {
+  position: absolute;
+  top: -8px;
+  right: -2px;
+  background: var(--w);
+  color: var(--bg);
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 5px;
+}
+
+.slot.used .box {
+  border-color: var(--d);
+  box-shadow: none;
+  background: linear-gradient(to top right, transparent calc(50% - 1.5px), var(--d) calc(50% - 1.5px) calc(50% + 1.5px), transparent calc(50% + 1.5px));
+}
+
+.slot.used svg { stroke: var(--d); }
+.slot.used b { color: var(--d); text-decoration: line-through; }
+
+/* draft des reliques (écran supplémentaire, même style) */
+
+.card-row { display: flex; gap: 12px; }
+
+.card {
+  flex: 1;
+  min-width: 0;
+  border: 3px solid var(--w);
+  padding: 12px;
+  text-align: left;
+  background: var(--bg);
+  transition: transform 0.1s;
+}
+
+.card:hover { transform: translate(-2px, -2px); }
+.card.sel { background: var(--w); color: var(--bg); }
+.card .ic { height: 34px; }
+.card .ic svg { width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linejoin: round; }
+.card b { display: block; font-weight: 800; font-size: 15px; line-height: 1.2; margin-top: 4px; }
+.card small { display: block; font-size: 11px; margin-top: 4px; color: var(--g); }
+.card.sel small { color: var(--d); }
