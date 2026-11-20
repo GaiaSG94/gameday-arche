@@ -22,6 +22,69 @@ Les 5 questions listées en V2.1 : moment du draft, score, série après un éch
 ### Changelog
 - 2026-11-18 · Style verrouillé.
 
+## opencode — Revue d'implémentation (07b, 2026-11-20)
+
+Implémentation du style verrouillé (Contour) dans le produit. Aucune nouvelle
+direction : tokens, typo, composants et mouvement viennent de `STYLE.md` et des
+planches `v2`. PR `GaiaSG94/gameday-arche#7` (mergée, CI verte), base `a2a0db5`.
+
+### Écrans
+
+| Page | Planche | Produit | Écart restant | Raison |
+|---|---|---|---|---|
+| Post | `planches/v2/01-post.html` | `views/PostView.tsx` (inline `splash.html`) | couloir de six arches en perspective, grand numéro du jour, 3 compteurs (joueurs, % salle six, compte à rebours), série de la semaine, CTA faits ; = 0 | — |
+| Jeu | `planches/v2/02-jeu.html` | `views/RunView.tsx` + `components/Scene.tsx` | jetons de coût/récompense, sélection animée (pointillé + flèche), carte des salles avec la salle courante en flammes, aperçu de la perte `7 → 5`, reliques en cases, CTA faits ; = 0 (le HUD déborde de 22 px dans la planche elle-même, reproduit à l'identique) | — |
+| Carte de fin | `planches/v2/03-carte-de-fin.html` | `views/EndView.tsx` | score au trait, torche, chemin 6 cases (arche + coût), histogramme **réel** avec la barre « YOU », rang, série +1, aperçu du commentaire, CTA faits ; = 0 | les planches montrent des données de démo, le produit affiche les données live (Redis) |
+| Séries & classement | `planches/v2/04-series-classement.html` | `views/BoardView.tsx` | calendrier 4 semaines (jour joué plein, aujourd'hui à la flamme), classement avec le chemin de chacun en petites arches, ligne du joueur en blanc, chemins masqués si non joué, compteurs du jour faits ; = 0 | idem, données live |
+| Draft (hors planches) | — | `views/DraftView.tsx` | écran autorisé par le LOCK (« un nouvel écran se dessine dans ce style »), même style | décision produit SPEC R1 |
+
+Typo : **Ubuntu réellement embarquée** (`public/fonts/Ubuntu-*.woff2`, licence UFL
+dans `public/fonts/UFL.txt`) — `STYLE.md` demande Ubuntu Sans, une seule famille ;
+la Liberation Sans Narrow précédente (condensée) n'était pas la planche.
+
+### Captures côte à côte planche | produit (1440 × 900) : `G-DESIGN/revue/`
+
+Régénérables : `app/capture/README.md` (build capture → serveur statique →
+`capture/compare.mjs`). Les captures produit rendent le produit réel (composants
+React du dépôt, seed du jour, statistiques de démonstration alignées sur les
+planches). Contrôle numérique de la mise en page : `capture/inspect.mjs` —
+cadre 740 × 560, barre 48 px, scène 384 px, HUD 128 px, torche 10 × (17 × 30),
+chemin 6 × (44 × 52), histogramme 332 × 140, calendrier 24 px, CTA 190 × 72,
+chiffre de fond 330/800 : identiques aux planches.
+
+### Écarts soumis à Gaia (aucun bloquant)
+
+1. **Pastille d'effet** : `STYLE.md` §6 dit « pastille = effet prêt ». Les
+   planches (données de démo hypothétiques, cf `PAGES.md`) la montraient sur
+   l'Ember Ring ; implémenté selon le style : Salt Compass « −1 next », Ash Veil
+   « +1 next », Ember Ring sans pastille (appliqué immédiatement).
+2. **Commentaire** : la planche montre « Path ▇▇ hidden as a spoiler ». L'anti-
+   spoiler du SPEC (aucune donnée de parcours divulguée, test dédié) est gardé :
+   1ʳᵉ ligne alignée sur la planche, 2ᵉ ligne annonce le chemin masqué sans
+   donnée.
+3. **« Discuss today »** (page Séries) : sous-titre « One tap · adds a comment »
+   au lieu de « Opens the comments » — l'iframe Devvit n'ouvre pas la page de
+   commentaires ; l'action réelle est le commentaire pré-rempli.
+4. **Hors produit** : le mock de feed et le `border-radius` des planches
+   appartiennent au cadre Reddit ; non implémentables depuis l'app.
+
+### Défauts de moteur corrigés au passage (l'UI disait une chose, le moteur une autre)
+
+1. Le draft des reliques se faisait au mauvais moment (le client demandait les
+   3 reliques d'un coup puis en redemandait → chemin rejeté `invalid run`) ;
+   désormais avant les salles 1, 3 et 5, comme le SPEC et le serveur.
+2. **Ash Veil** créditée à la salle suivante (son libellé et le SPEC le
+   disaient), plus dans la salle du draft. Test dédié.
+3. Une torche éteinte **dans la salle 6** n'est plus comptée comme une victoire.
+
+Données serveur ajoutées pour le design : histogramme de la lumière par jour
+(`arche:hist:`), chemin de chaque joueur (`arche:paths:`, classement +
+anti-spoiler), heure de fin (`arche:times:`, départage des égalités — même
+lumière = même rang), jours joués (`arche:days:`, calendrier + points semaine).
+
+Gates : `npm test` 11/11, types OK, lint 0 erreur (1 warning react-refresh
+préexistant), build OK, check-limits 0.
+
 ## V2.1 · 2026-11-18 — style validé, déclinaison des pages
 
 **Statut : les 4 pages sont validées par Gaia (2026-11-18).** Style verrouillé ensuite (voir LOCK). Les questions produit ci-dessous restent ouvertes.
